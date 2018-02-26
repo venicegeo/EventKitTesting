@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="05Happy Path Street Map Themes"
+    errors="0" failures="1" hostname="" id="" package="05Happy Path Street Map Themes" skipped="0"
+    tests="1" time="20.31" timestamp="Mon, 26 Feb 2018 19:28:35 GMT">
+  
+    <testcase name="HappyPath StreetMap Themes" classname="05Happy Path Street Map Themes" time="20.31" assertions="2">
+
+      <failure message="Failed [ok]: (Path is... &quot;/oam/west/servlet/login.jsp&quot; (Path matches '/oam/west/servlet/login.jsp'))">    at Object.&lt;anonymous&gt; (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:99:23)</failure>
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

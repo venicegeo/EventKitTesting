@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="04Happy Path DigitalGlobe Imagery"
+    errors="0" failures="1" hostname="" id="" package="04Happy Path DigitalGlobe Imagery" skipped="0"
+    tests="1" time="321.4" timestamp="Mon, 26 Feb 2018 19:29:21 GMT">
+  
+    <testcase name="HappyPath DigitalGlobe Imagery" classname="04Happy Path DigitalGlobe Imagery" time="321.4" assertions="2">
+
+      <failure message="Timed out while waiting for element &lt;.qa-ProviderRow-Check-providerStatus&gt; to be present for 240000 milliseconds.">    at Object.HappyPath DigitalGlobe Imagery (/Users/Peizer/Documents/EventKitTest/tests/04Happy Path DigitalGlobe Imagery.js:47:9)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)</failure>
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

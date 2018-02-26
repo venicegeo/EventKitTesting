@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="01GeoAxisLogin"
+    errors="0" failures="0" hostname="" id="" package="01GeoAxisLogin" skipped="0"
+    tests="1" time="16.66" timestamp="Mon, 26 Feb 2018 19:27:24 GMT">
+  
+    <testcase name="GeoAxisLogin" classname="01GeoAxisLogin" time="16.66" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

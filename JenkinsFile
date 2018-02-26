@@ -1,0 +1,40 @@
+node {
+  def root = pwd()
+  def nodejs = tool 'NodeJS_6'
+  //def PCF_SPACE = 'pz-int pz-stage pz-test'
+  
+  stage('Clean') {
+    deleteDir()
+  }
+
+  stage('Setup') {
+    git([
+      url: "https://github.com/bpeizer/EventkitTest",
+      poll: true,
+      branch: "master"
+    ])
+  }
+
+  stage('Test') {
+    withCredentials([file(credentialsId: 'eventkit_postman_environment', variable: 'POSTMAN_FILE')]) {
+    withCredentials([usernamePassword(credentialsId: 'eventkit_geoxis', usernameVariable: 'GEOAXIS_USERNAME', passwordVariable: 'GEOAXIS_PASSWORD')]) {
+    withCredentials([usernamePassword(credentialsId: 'eventkit_saucelabs', usernameVariable: 'SAUCE_USERNAME', passwordVariable: 'SAUCE_ACCESS_KEY')]) {
+      withEnv(["PATH+=${root}/node_modules/newman/bin:${nodejs}/bin", "HOME=${root}"]) {
+           sh "npm install -g newman"
+           sh "npm install"
+           //sh "java -jar selenium-server-standalone-3.9.1.jar"
+           sh '''           
+            echo PATH=$PATH
+            echo HOME=$HOME
+            '''
+           sh "sh EventKit.sh" 
+               }  
+              }
+            }   
+           }
+         }
+         
+ stage ('Cleanup') {
+    deleteDir()
+  }
+}
