@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="08FindDatapack"
+    errors="0" failures="1" hostname="" id="" package="08FindDatapack" skipped="0"
+    tests="1" time="205.6" timestamp="Tue, 17 Jul 2018 14:45:39 GMT">
+  
+    <testcase name="Find Datapack" classname="08FindDatapack" time="205.6" assertions="32">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+      <failure message="Failed [ok]: (DataPack is visable)">    at /Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:519:28
+    at Object.&lt;anonymous&gt; (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:496:9)</failure>
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

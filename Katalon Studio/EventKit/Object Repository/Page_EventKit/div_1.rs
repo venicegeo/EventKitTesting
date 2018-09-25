@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>div_1</name>
+   <tag></tag>
+   <elementGuidId>02bb22ca-59c2-475c-a382-48b58bd682da</elementGuidId>
+   <selectorMethod>BASIC</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>div</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;ProviderList&quot;)/div[2]/label[@class=&quot;qa-ExportInfo-ListItem&quot;]/div[@class=&quot;qa-ExportInfo-CheckBox-provider&quot;]/div[1]/div[1]/div[3]</value>
+   </webElementProperties>
+</WebElementEntity>

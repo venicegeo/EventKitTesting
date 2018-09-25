@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="06HappyPathStreetMapTile"
+    errors="0" failures="0" hostname="" id="" package="06HappyPathStreetMapTile" skipped="0"
+    tests="1" time="152.8" timestamp="Mon, 25 Jun 2018 20:31:05 GMT">
+  
+    <testcase name="HappyPath StreetMap Tile" classname="06HappyPathStreetMapTile" time="152.8" assertions="6">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

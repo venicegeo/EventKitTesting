@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>button_qa-DataPackListItem-Ico</name>
+   <tag></tag>
+   <elementGuidId>1785c2c8-22b2-4f21-9bb8-84ad7f4fae0f</elementGuidId>
+   <selectorMethod>BASIC</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>button</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>qa-DataPackListItem-IconButton</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tabindex</name>
+      <type>Main</type>
+      <value>0</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>type</name>
+      <type>Main</type>
+      <value>button</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;root&quot;)/div[1]/div[@class=&quot;qa-Application-content&quot;]/div[1]/div[1]/div[5]/div[@class=&quot;qa-DataPackPage-view&quot;]/div[1]/div[1]/div[1]/div[1]/div[@class=&quot;qa-MapView-GridList&quot;]/div[1]/div[@class=&quot;qa-DataPackListItem-Card&quot;]/div[1]/div[@class=&quot;qa-DataPackListItem-CardTitle&quot;]/span[1]/div[1]/div[@class=&quot;qa-DataPackListItem-IconMenu tour-datapack-options&quot;]/button[@class=&quot;qa-DataPackListItem-IconButton&quot;]</value>
+   </webElementProperties>
+</WebElementEntity>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="12ShareWithAGroup"
+    errors="0" failures="1" hostname="" id="" package="12ShareWithAGroup" skipped="0"
+    tests="1" time="22.15" timestamp="Mon, 25 Jun 2018 20:42:08 GMT">
+  
+    <testcase name="Share With A Group" classname="12ShareWithAGroup" time="22.15" assertions="3">
+
+    
+
+      <failure message="Failed [ok]: (FAILED: 'click group name input' - Couldn't find element to click. (Click '.qa-CreateGroupDialog-textField &gt; input' using 'CSS'))">    at browser._elementPresent (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:199:24)
+    at Object.&lt;anonymous&gt; (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:382:13)</failure>
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

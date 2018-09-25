@@ -1,0 +1,14 @@
+15:08:19.208 INFO - Launching a standalone Selenium Server
+15:08:19.247 INFO - Java: Oracle Corporation 25.112-b16
+15:08:19.248 INFO - OS: Mac OS X 10.12.6 x86_64
+15:08:19.260 INFO - v2.53.0, with Core v2.53.0. Built from revision 35ae25b
+15:08:19.336 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
+15:08:19.336 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
+15:08:19.336 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+15:08:19.336 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+15:08:19.338 INFO - Driver class not found: org.openqa.selenium.htmlunit.HtmlUnitDriver
+15:08:19.338 INFO - Driver provider org.openqa.selenium.htmlunit.HtmlUnitDriver is not registered
+15:08:19.410 INFO - RemoteWebDriver instances should connect to: http://127.0.0.1:4444/wd/hub
+15:08:19.410 INFO - Selenium Server is up and running

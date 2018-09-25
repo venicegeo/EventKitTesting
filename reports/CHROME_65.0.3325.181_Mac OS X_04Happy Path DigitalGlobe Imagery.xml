@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="04Happy Path DigitalGlobe Imagery"
+    errors="0" failures="0" hostname="" id="" package="04Happy Path DigitalGlobe Imagery" skipped="0"
+    tests="1" time="79.97" timestamp="Tue, 24 Apr 2018 17:53:46 GMT">
+  
+    <testcase name="HappyPath DigitalGlobe Imagery" classname="04Happy Path DigitalGlobe Imagery" time="79.97" assertions="25">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

@@ -3,7 +3,6 @@ echo start
 
 echo "\\/ \\/ \\/ CHECK FOR ENV VARS HERE \\/ \\/ \\/"
 echo "$GEOAXIS_USERNAME"
-echo "$SAUCE_USERNAME"
 echo "^  ^  ^  CHECK FOR ENV VARS HERE  ^  ^  ^"
 
 pushd `dirname $0` > /dev/null
@@ -21,17 +20,24 @@ bigLatch=0
 # Selenium Configurations:
 
 
-echo "RUN TESTS ON CHROME"
+echo "RUN TESTS ON FIREFOX"
 
 
 
-		# Run the Selenium tests.  
-		npm test || { latch=1; }
-		
+		# Run the Firefox Selenium tests.
+		./node_modules/.bin/nightwatch --config ./nightwatchFirefox.json -e firefox tests || { latch=1; }
 		# Remember that there was an overall failure, if a single iteration has a failure.
 		if [ "$latch" -eq "1" ]; then
 			bigLatch=1
 		fi
+echo "RUN TESTS ON CHROME"
+		# Run the Chrome Selenium tests.  
+		./node_modules/.bin/nightwatch --config ./nightwatchChrome.json -e chrome tests || { latch=1; }
+		# Remember that there was an overall failure, if a single iteration has a failure.
+		if [ "$latch" -eq "1" ]; then
+			bigLatch=1
+		fi
+
 
 # Return an overall error if any collections failed.
 exit $bigLatch

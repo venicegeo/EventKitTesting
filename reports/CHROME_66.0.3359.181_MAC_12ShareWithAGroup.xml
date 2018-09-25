@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="12ShareWithAGroup"
+    errors="0" failures="1" hostname="" id="" package="12ShareWithAGroup" skipped="0"
+    tests="1" time="18.76" timestamp="Wed, 13 Jun 2018 21:21:27 GMT">
+  
+    <testcase name="Share With A Group" classname="12ShareWithAGroup" time="18.76" assertions="12">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+      <failure message="Failed [ok]: (FAILED: 'click group name input' - Couldn't find element to click. (Click '.qa-CreateGroupDialog-textField &gt; input' using 'CSS'))">    at browser._elementPresent (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:199:24)
+    at Object.&lt;anonymous&gt; (/Users/Peizer/Documents/EventKitTest/common/snaptest-nw-driver.js:382:13)</failure>
+
+    
+    </testcase>
+  
+
+  
+    <system-err>
+      Error while running createDatapack command: CSS is not defined
+    at Object.HappyPath NOME Imagery (/Users/Peizer/Documents/EventKitTest/tests/03HappyPathNOMEImagery.js:22:11)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.HappyPath DigitalGlobe Imagery (/Users/Peizer/Documents/EventKitTest/tests/04HappyPathDigitalGlobeImagery.js:22:11)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.HappyPath StreetMap Themes (/Users/Peizer/Documents/EventKitTest/tests/05HappyPathStreetMapThemes.js:22:14)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.HappyPath StreetMap Tile (/Users/Peizer/Documents/EventKitTest/tests/06HappyPathStreetMapTile.js:22:14)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.Create Two Jobs Delete One.js (/Users/Peizer/Documents/EventKitTest/tests/07Clone Job Delete One.js:22:11)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.Find Datapack (/Users/Peizer/Documents/EventKitTest/tests/08FindDatapack.js:22:11)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.Share With Another User (/Users/Peizer/Documents/EventKitTest/tests/10ShareWithAnotherUser.js:22:14)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+Error while running createDatapack command: CSS is not defined
+    at Object.HappyPath NOME Imagery (/Users/Peizer/Documents/EventKitTest/tests/13HappyPathAsterImagery.js:22:11)
+    at Module.call (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/module.js:62:34)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/runner/testcase.js:70:29
+    at _fulfilled (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:834:54)
+    at self.promiseDispatch.done (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:863:30)
+    at Promise.promise.promiseDispatch (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:796:13)
+    at /Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:556:49
+    at runSingle (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:137:13)
+    at flush (/Users/Peizer/Documents/EventKitTest/node_modules/q/q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+    </system-err>
+  
+
+  
+  </testsuite>
+</testsuites>

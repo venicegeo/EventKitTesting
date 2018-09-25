@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>path_1</name>
+   <tag></tag>
+   <elementGuidId>98dac1ea-052f-4d27-81ac-f42dbe3c250e</elementGuidId>
+   <selectorMethod>BASIC</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>path</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>d</name>
+      <type>Main</type>
+      <value>M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>/html[1]/body[1]/div[12]/div[@class=&quot;qa-ShareBaseDialog-Dialog&quot;]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[@class=&quot;qa-MemberRow-Card&quot;]/div[1]/div[@class=&quot;qa-MemberRow-CardHeader&quot;]/div[1]/span[1]/div[1]/svg[1]/path[1]</value>
+   </webElementProperties>
+</WebElementEntity>

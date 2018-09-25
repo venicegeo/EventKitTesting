@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="05HappyPathStreetMapThemes"
+    errors="0" failures="0" hostname="" id="" package="05HappyPathStreetMapThemes" skipped="0"
+    tests="1" time="149.8" timestamp="Tue, 17 Jul 2018 14:34:03 GMT">
+  
+    <testcase name="HappyPath StreetMap Themes" classname="05HappyPathStreetMapThemes" time="149.8" assertions="29">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

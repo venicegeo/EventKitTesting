@@ -7,14 +7,13 @@
   "globals_path" : "",
 
   "selenium" : {
-    "start_process" : true,
+    "start_process" : false,
     "server_path" : "",
     "log_path" : "",
-    "host" : "ec2-54-244-62-140.us-west-2.compute.amazonaws.com",
     "port" : 4444,
     "cli_args" : {
       "webdriver.chrome.driver" : "",
-      "webdriver.ie.driver" : "",
+      "webdriver.ie.driver" : ""
     }
   },
 
@@ -22,9 +21,8 @@
 
   "test_settings" : {
     "default" : {
-      "launch_url" : "http://ec2-54-244-62-140.us-west-2.compute.amazonaws.com",
       "selenium_port"  : 4444,
-      "selenium_host"  : "ec2-54-244-62-140.us-west-2.compute.amazonaws.com",
+      "selenium_host"  : "35.160.68.161",
       "silent": true,
       "globals" : {
         "GeoAxisUser" : "${GEOAXIS_USERNAME}",
@@ -34,8 +32,8 @@
         "enabled" : false,
         "path" : ""
       },
-      "username" : "",
-      "access_key" : "",
+      "username" : "Administrator",
+      "access_key" : "a2&&)r$XU)$",
 
       "skip_testcases_on_fail": false,
 
@@ -50,7 +48,7 @@
 
     "chrome": {
       "desiredCapabilities": {
-        "platform": "Windows 10",
+        "platform": "Windows",
         "browserName": "chrome",
         "version": "60",
         "idleTimeout":1000
@@ -59,7 +57,7 @@
 
     "firefox" : {
       "desiredCapabilities": {
-        "platform": "Windows 10",
+        "platform": "Windows",
         "browserName": "firefox",
         "acceptInsecureCerts":true,
         "acceptSslCerts":true,
@@ -73,7 +71,7 @@
 
     "internet_explorer_edge" : {
       "desiredCapabilities": {
-        "platform": "Windows 10",
+        "platform": "Windows",
         "browserName": "MicrosoftEdge",
         "version": "latest",
         "idleTimeout":1000

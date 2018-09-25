@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>div</name>
+   <tag></tag>
+   <elementGuidId>9ff2fe7c-893b-4352-8a6d-5e9370fba0f5</elementGuidId>
+   <selectorMethod>BASIC</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>div</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;GeneralInfo&quot;)/div[2]/div[2]/div[@class=&quot;qa-ExportInfo-input-description&quot;]/div[2]</value>
+   </webElementProperties>
+</WebElementEntity>

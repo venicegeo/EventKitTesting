@@ -14,25 +14,23 @@ node {
       branch: "master"
     ])
   }
-
-  stage('Test') {
+  stage(' Run Test') {
     withCredentials([file(credentialsId: 'eventkit_postman_environment', variable: 'POSTMAN_FILE')]) {
-    withCredentials([usernamePassword(credentialsId: 'eventkit_geoxis', usernameVariable: 'GEOAXIS_USERNAME', passwordVariable: 'GEOAXIS_PASSWORD')]) {
-    withCredentials([usernamePassword(credentialsId: 'eventkit_saucelabs', usernameVariable: 'SAUCE_USERNAME', passwordVariable: 'SAUCE_ACCESS_KEY')]) {
-      withEnv(["PATH+=${root}/node_modules/newman/bin:${nodejs}/bin", "HOME=${root}"]) {
+    withCredentials([usernamePassword(credentialsId: 'gx_test_account', usernameVariable: 'bf_username', passwordVariable: 'bf_password')]) {
+      withEnv(["PATH+=${root}/node_modules/newman/bin:${nodejs}/bin", "HOME=${root}"]){ 
+      withEnv(["DISPLAY=:0"]){
            sh "npm install -g newman"
-           sh "npm install"
-           //sh "java -jar selenium-server-standalone-3.9.1.jar"
            sh '''           
             echo PATH=$PATH
             echo HOME=$HOME
+            sh EventKit.sh
             '''
-           sh "sh EventKit.sh" 
+ 
                }  
               }
-            }   
-           }
          }
+    }
+  }
          
  stage ('Cleanup') {
     deleteDir()

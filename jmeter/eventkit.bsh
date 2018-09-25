@@ -1,0 +1,7 @@
+
+String result = vars.get("JobStatus")
+Failure = !result.equals("COMPLETED");
+
+if (Failure) {
+  FailureMessage = "Job Failed or took longer than 30 min";
+}

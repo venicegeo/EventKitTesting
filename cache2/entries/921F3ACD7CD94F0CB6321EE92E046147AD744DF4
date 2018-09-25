@@ -1,0 +1,482 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+
+
+
+
+
+
+
+<html lang="en">
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="utf-8" />
+        
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css" media="screen">
+        
+        <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+        <script type="text/javascript" src="js/jNotify.jquery.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.core.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="js/cookie-utils.js"></script>
+        
+        <script type="text/javascript" src="js/main.js"></script>
+        <script>
+            setPopupPromptTime("5000");
+            setDUCreationFormRedirectURL("href=\"https://geoaxis.gxaccess.com/users/disadvantaged.xhtml\" target=\"_blank=\"");
+            setEnterpriseIdentityRedirectURL("href=\"https://geoaxis.gxaccess.com/users/enterprise-identity.xhtml\" target=\"_blank=\"");
+        </script>
+        <title>GEOAxIS</title>
+    </head>
+    
+    <body>
+        <input type="hidden" id="fbmflag" value="null" />
+
+        
+        
+        
+        <div id="ajaxLoader" style="display: none;"><img src="img/ajax-loader.gif" alt="Loading ..."></div>
+        
+        <div id="mynav">
+            <div class="container">
+                <div class="navbar">
+                    <div class="navbar-inner"></div>
+                </div>
+            </div>
+        </div>
+        <div id="myheader">
+            <div class="container">
+                <img class="pull-left logo" src="img/geoaxis_logo.png">
+		        <img class="pull-right logo hidden-phone" src="img/logo_nga.png">
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="container page_body">
+            <div class="row">
+                <div class="span12 title-header">
+                    <img class="pull-left" style="margin-right:1em;" src="img/consumer_portal.png"/><h1>GEOAxIS Authentication</h1>
+                </div>
+            </div>
+            <hr>
+            <!-- END COMMON HEADER -->
+
+
+            <!-- START ERROR MESSAGE -->
+            <div id="toperror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Login Failed</strong>
+            </div>
+            
+            <div id="passwordreset" class="row" style="display: none;">
+                <div class="span12">    
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                         <strong>Your password has expired. In order to continue you must reset your password</strong>
+                    </div>
+                </div>
+            </div>
+            <div id="datefieldnull" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please enter a date.</strong>
+            </div>
+           
+             <div id="datefieldinvalid" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Invalid date.</strong>
+            </div>  
+
+            <div id="justificationfieldnull" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please enter a justification.</strong>
+            </div>
+
+            <div id="justificationlengthexceeded" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please limit your justification to 1024 characters.</strong>
+            </div>
+            
+            <div id="emailsnullerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please specify e-mails to continue</strong>
+            </div>
+            <div id="existingemailerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>A DUA with this username already exists.</strong>
+            </div> 
+             <div id="emailsmatchingerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>E-mails do not match. Please re-enter e-mails</strong>
+            </div>     
+            <div id="emailcriteriaerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Invalid e-mail format</strong>
+            </div>
+            <div id="passwordsnullerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please specify passwords to continue</strong>
+            </div>
+           
+             <div id="passwordsmatchingerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Passwords do not match. Please re-enter passwords</strong>
+            </div>
+            
+            <div id="passwordscriteriaerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Disadvantaged User accounts must comply with NGA Instruction 8010.14 
+                    requirements for password administration, as listed below.</strong>
+                <ul>
+                    <li>Minimum 16 characters long</li>
+                    <li>Contains all of the following items:</li>
+                    <ul>
+                        <li>Uppercase letter</li>
+                        <li>Lowercase letter</li>
+                        <li>Number</li>
+                        <li>Symbol</li>
+                    </ul>
+                </ul>
+            </div>
+            <!-- END ERROR MESSAGE -->
+
+
+            <!-- START COMMON LEFT MENU -->
+            <div class="row">
+                <div id="authmechlinks" class="span4 hidden-phone">
+                    <div style="border-right:1px solid #DDD;padding-right:1em;">
+                            
+                            <h6>Please provide one of the following credentials to Authenticate</h6>
+                            <ul class="nav nav-tabs nav-stacked">
+                            <li class="nav-header">PKI Certificate</li>
+<li><a class="x509" href="CredCollector/X509?mechanism=GxCert"><i class="icon-lock icon-black"></i> PKI Certificate</a></li>
+<li class="nav-header">Login/Password</li>
+<li><a class="formlink" href="?mechanism=DisUserOID&forgotpassword=true"><i class="icon-lock icon-black"></i> Disadvantaged Users</a></li>
+<li><a class="formlink" href="?mechanism=AusUserOID"><i class="icon-lock icon-black"></i> Austere Users</a></li>
+<li class="nav-header">Basic Login/Password</li>
+<li><a class="basiclink" href="CredCollector/BASIC?mechanism=GxDisAusBasic"><i class="icon-lock icon-black"></i> GEOAxIS Internal LDAP</a></li>
+
+                        </ul>
+					<div class="pull-left helplink" style="display: block;">
+						<img src="img/icon_help.png"
+							style="float: left; height: 30px; width: 30px;"> <span
+							style="display: inline-block; padding-top: 5px;"> <a
+							href="#" title="Click here for help"> <b>Which credential should I choose?</b>
+						</a>
+						</span>
+					</div>
+				</div>
+                </div>
+                <!-- END COMMON LEFT MENU -->
+
+
+                <!-- START MAIN CONTENT -->
+                <div id="formlogin" style="display: none;">
+                    <div class="span3 block_input">
+                        <h4 id="formtitle">Secure Login</h4>
+                        <hr>
+                        <form name="login" id="login" action="CredCollector" method="post" target="_parent">
+                            <label>Username: <input name="username" id="username" type="text"></label>
+                            <label>Password: <input name="password" id="password" type="password"></label>
+                            <script type="text/javascript">
+                                const csrfToken = '-35507413-75-66-60125-6795-43-12-76-4967-7253-111-3381';
+                                document.write('<input type="hidden" id="csrftoken" value="' + csrfToken + '" />');
+                                setCookie('csrftoken', csrfToken, 1);
+                            </script>
+                            <div id="impersonateContainer" style="padding-top:20px; padding-left:20px; display: none;"><label><input type="checkbox" name="impersonate" id="impersonate" style="display: inline; margin-bottom: 5px;" /> Impersonate Entry?</label>
+                                <label style="padding-left: 10px;">Impersonatee:
+                                    <select name=impersonateIdType" id="impersonateIdType" disabled>
+                                        <option value="uid" selected>UID</option>
+                                        <option value="orclnormdn">DN</option>
+                                        <option value="gxCertificateSubjectString">Certificate Subject String</option>
+                                        <option value="gxCertificateSubjectStringReversed">Certificate Subject String Reversed</option>
+                                    </select>
+                                    <input name="impersonateeID" id="impersonateeID" type="text" disabled>
+                                </label>
+                                <label style="padding-left: 10px;">Impersonatee Identity Store: 
+                                    <select name="impersonateeIdStore" id="impersonateeIdStore" disabled>
+                                        <option value="GXIS_ADM">GXIS_ADM</option>
+<option value="GXIS_OVD">GXIS_OVD</option>
+<option value="IDSPROFILE-Gx_IDS">IDSPROFILE-Gx_IDS</option>
+<option value="IDSPROFILE-idxuserrole">IDSPROFILE-idxuserrole</option>
+<option value="IDSPROFILE-userrole">IDSPROFILE-userrole</option>
+<option value="UserIdentityStore1" selected>UserIdentityStore1</option>
+
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="forgotPasswordContainer" style="padding-top:5px; display: none; font-size:.9em;">
+								<span style="display: inline-block; padding-top: 5px;"> 
+									<a href="https://geoaxis.gxaccess.com/users/forgotPassword.xhtml" title="Click here for Password Reset">Forgot your password?</a>
+								</span>
+                            </div>
+                            </br>
+                            <input class="btn" name="submit" type="submit" value="Login"/>
+                        </form>
+                    </div>
+
+                    <div id="formmessage" class="span5 hidden-phone">
+                        <div id="helpDeskContent" class="well well-small" style="font-size:.8em;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="consentmessage" class="span12" style="display: none;">
+	                <h4>You are accessing an U.S. Government (USG) Information System (IS) that is provided for authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions:</h4>
+					<div class="progress progress-warning progress-striped"></div>
+					<form style="margin: 20px;" name="consentagreement" id="consentagreement" action="CredCollector" method="post" target="_parent">
+						<li style="margin: 10px;">At any time, the USG may inspect and seize data stored on this IS.
+						<li style="margin: 10px;">Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+						<li style="margin: 10px;">This IS includes security measures (e.g., authentication and access controls) to protect USG interests not for your personal benefit or privacy.
+						<li style="margin: 10px;">Notwithstanding the above, using this IS does not constitute consent to PM, LE, or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential.
+						<p style="text-align: center; margin: 25px;">
+							<input class="btn" name="consentbutton" type="submit" value="I Consent"/>
+						</p>
+					</form>
+				</div>
+				
+				<div id="fedmessage" class="span12" style="display: none;">
+					<h4>You are accessing an U.S. Government (USG) Information System (IS) that is provided for authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions:</h4>
+					<div class="progress progress-warning progress-striped"></div>
+					<form style="margin: 20px;" name="fedagreement" id="fedagreement" action="CredCollector" method="post" target="_parent">
+						<li style="margin: 10px;">At any time, the USG may inspect and seize data stored on this IS.
+						<li style="margin: 10px;">Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+						<li style="margin: 10px;">This IS includes security measures (e.g., authentication and access controls) to protect USG interests not for your personal benefit or privacy.
+						<li style="margin: 10px;">Notwithstanding the above, using this IS does not constitute consent to PM, LE, or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential.
+						<p style="text-align: center; margin: 25px;">
+							<input class="btn" name="fedbutton" type="submit" value="I Consent" />
+						</p>
+					</form>
+				</div>
+				
+                <div id="govwarning" class="span8">
+                    <h4>You are attempting to access a resource protected by GEOAxIS.</h4>
+                    <div class="progress progress-warning progress-striped"></div>
+                    <h4>U.S. Government Warning</h4>
+                    <p>This is a United States Government Computer System.</p>
+                    <p>Use of this U.S. Government system, authorized or unauthorized, constitutes consent to monitoring of this system.</p>
+                    <p>For technical assistance, please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)</p>
+                </div>
+                        
+                <div id="help" class="span8" style="display: none;">
+                    <h4>Click the text below to find more information</h4>
+                    
+                </div>
+                
+                <div id="formexpiration" style="display: none;">
+                    <div class="span4 block_input">
+                        <h4 id="formexpirationtitle">Reset Password</h4>
+                        <hr>
+                        <form name="resetpassword" id="resetpassword" action="CredCollector" method="post" target="_parent">
+                            <label>New Password: <input name="newpassword" id="newpassword" type="password"></label>
+                            <label>Confirm Password: <input name="renewpassword" id="renewpassword" type="password"></label>
+                            <input class="btn" name="passwordreset" type="submit" value="Update Password"/>
+                        </form>
+                    </div>
+                    <div class="span4 hidden-phone">
+                        <div class="well well-small" style="font-size:.8em;">
+                            <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                            <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="formregistration" style="display: none;">
+                    <div class="span4 block_input">
+                        <h4 id="formregistrationTitle">User Certificate Registration</h4>
+                        <hr>
+                        <form name="user_registration" id="user_registration" action="CredCollector/X509" method="post" target="_parent">
+                            <p>Your certificate must be registered with GEOAxIS prior to use.
+                               Please click the 'Register Certificate' button below.</p>
+                            
+                            <div id="fnDiv">
+                                <label id="fnLabel" for="firstname">First Name:</label>
+                                <div id="fnInputDiv">
+                                    <input name="firstname" id="firstname" type="text">
+                                    <span id="fnInline" style="display: none;">Please specify your first name</span>
+                                </div>    
+                            </div>
+                            
+                            <div id="lnDiv">
+                                <label id="lnLabel" for="lastname">Last Name:</label>
+                                <div id="lnInputDiv">
+                                    <input name="lastname" id="lastname" type="text">
+                                    <span id="lnInline" style="display: none;">Please specify your last name</span>
+                                </div>
+                            </div>
+                            
+                            <div id="orgDiv">
+                                 <label id="orgLabel" for="organization">Organization:</label>
+                                 <div id="orgInputDiv">
+                                    <input name="organization" id="organization" type="text">
+                                    <span id="orgInline" style="display: none;">Please specify the organization or agency you are affiliated with</span>
+                                 </div>
+                            </div>
+                            
+                            <div id="emailDiv">
+                                 <label id="emailLabel" for="emailaddress">Email Address:</label>
+                                 <div id="emailInputDiv">
+                                    <input name="emailaddress" id="emailaddress" type="text">
+                                    <span id="emptyEmailInline" style="display: none;">Please specify your email address </span>
+                                    <span id="invalidEmailInline" style="display: none;">The email you specified is invalid.  Please re-enter your email address.</span>
+                                 </div>
+                            </div>
+                            
+                            <div id="confirmEmailDiv">
+                                 <label id="confirmEmailLabel" for="confirmemail">Confirm Email Address:</label>
+                                 <div id="confirmEmailInputDiv">
+                                    <input name="confirmemail" id="confirmemail" type="text">
+                                    <span id="emptyConfirmEmailInline" style="display: none;">Please confirm your email address</span>
+                                    <span id="mismatchEmailInline" style="display: none;">Email addresses do not match. Please re-enter your email</span>
+                                 </div>
+                            </div>
+                            
+                            <input type="hidden" name="regUsr" value="true">
+                            <input class="btn" name="registerUsr" type="submit" value="Register Certificate" />
+                        </form>
+                    </div>
+                    <div class="span4 hidden-phone">
+                        <div class="well well-small" style="font-size:.8em;">
+                            <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                            <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                        </div>
+                    </div>
+                </div>
+                
+               <div id="formcreatedu" style="display: none;">
+                    <div class="span3 block_input">
+                        <h4 id="formcreatedutitle">Disadvantaged User Registration</h4>
+                        <hr>
+                        <form name="createdisadvuser" id="createdisadvuser" action="CredCollector" method="post" target="_parent">
+                            <label>E-mail Address: <input name="duemail" id="duemail" type="email"></label>
+                            <label id="reDuMailLabel">Confirm E-mail: <input name="reduemail" id="reduemail" type="email"></label>
+                            <label>Account Expiration Date: <input name="duperiod" id="duperiod" type="text"></label>
+			                <label>Account Justification:  <select name = "dujustification" id="dujustification" style="font-size:.8em;">
+                                    <option value="none">Select one...</option>
+                                    <option value="lostToken">(U) Lost CAC/NSS Token</option>
+                                    <option value="notSupported">(U) I actively use a device that does not support hard token credentials</option>
+                                    <option value="futureUse">(U) I am registering my DUA for future use</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </label>
+                            <div id="dujustificationother" style="display: none;">
+                                <label style="font-size:.8em;">Enter your unclassified justification here.  Please limit your justification 
+                                    to 1024 characters:<textarea name="dujustificationtext" id="dujustificationtext" rows="5"></textarea></label>
+                            </div>
+                            <br/>                            
+                            <div id="pwdRequirements" style="font-size:.8em;">Disadvantaged User accounts must comply with NGA Instruction 8010.14
+                                requirements for password administration, as listed below.
+                                <ul>
+                                    <li>Minimum 16 characters long</li>
+                                    <li>Contains all of the following items:
+                                        <ul>
+                                            <li>Uppercase letter</li>
+                                            <li>Lowercase letter</li>
+                                            <li>Number</li>
+                                            <li>Symbol</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>    
+                            <label>Password: <input name="dupassword" id="dupassword" type="password"></label>
+                            <label>Password Confirmation: <input name="redupassword" id="redupassword" type="password"></label>
+                            
+                            <input class="btn" name="createdisadvbutton" type="submit" value="Create Account"/>
+                        </form>
+                    </div>
+                    <div id="formmessage" class="span5 hidden-phone">
+                        <div id="alternateHelpDeskContent" class="well well-small" style="font-size:.8em;">
+                        </div>
+                    </div>
+                </div>
+                <!-- END MAIN CONTENT -->
+
+                <!-- LOGIN FORM HELP BOX -->
+                <div id="help_DisUserOID" style="display:none;">Your GEOAxIS Disadvantaged User Account (DUA) serves as a secondary Authentication method (e.g. for access on mobile devices without card readers) associated with your PKI credentials. <b>You must undergo a one-time registration process to create and activate your DUA using your Common Access Card (CAC) / National Security Systems (NSS) Token. If you have never been issued a CAC/NSS Token, you cannot register a DUA.</b> <br/> <br/>To create your DUA, ensure your CAC/NSS Token is inserted into your card reader and select the PKI Certificate option on this page.  Once you've been authenticated, you will be prompted to create your DUA.  Alternatively you can navigate to the DUA webpage (https://geoaxis.tl.gxaws.dev/users/disadvantaged.xhtml) to create your DUA.<br/><br/><b>NOTE:</b> If you have been issued a CAC/NSS Token, but currently have a <b>token hold</b> on your account, you can still register a DUA. To do this, navigate to the DUA webpage (link above) and authenticate via the Disadvantaged User option with the username/password associated with your CAC/NSS Token.<br/><br/> Following successful creation of your DUA, you can access web-based mission resources via the Disadvantaged User option using your DUA (email address and password).<br/><br/>If you need technical assistance with your DUA (e.g. you forgot your password or your account is expired), please contact the GEOAxIS Operations Support Team at 508-622-5549 (Commercial) or 576-1717 (Secure).<br/><br/><b>NOTE:</b> DUAs are NOT the same as NGA network (e.g. SECNet/SBUNet desktop login) usernames/passwords, which are managed by the ESC.</div>
+<div id="help_AusUserOID" style="display:none;">This provides an Authentication option (username and password) for <b>users who do not have and will not be issued any PKI Certificate credentials</b>, but have <b>a temporary mission impacting need to access NGA protected resources</b>.<br/><br/>If you do not have an Austere User account established, but believe you have a valid mission need, please contact the respective NGA Application you are attempting to access or the Enterprise Service Center (ESC) at 1-800-455-0899 (Commercial) or 578-5555 (Secure) for assistance contacting the NGA Application Program Office.</div>
+ 
+                <div id="help_default" style="display:none;">
+                    <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                    <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                </div>
+
+                <div id="altHelp_default" style="display:none;">
+                    <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                    <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                </div>
+
+                <!-- START COMMON FOOTER -->
+                <div id="authmechlinks2" class="span4 hidden-desktop hidden-tablet">
+                <hr class="hidden-desktop hidden-tablet">
+
+                    <h6>Please provide one of the following credentials to Authenticate</h6>
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li class="nav-header">PKI Certificate</li>
+<li><a class="x509" href="CredCollector/X509?mechanism=GxCert"><i class="icon-lock icon-black"></i> PKI Certificate</a></li>
+<li class="nav-header">Login/Password</li>
+<li><a class="formlink" href="form_login.jsp?mechanism=DisUserOID" target="mainframe"><i class="icon-lock icon-black"></i> Disadvantaged Users</a></li>
+<li><a class="formlink" href="form_login.jsp?mechanism=AusUserOID" target="mainframe"><i class="icon-lock icon-black"></i> Austere Users</a></li>
+
+                    </ul>
+                </div>
+            </div>		
+            <div class="row hidden-desktop hidden-tablet">
+                <div class="span12">
+                    <div class="well well-small" style="margin-top:1em;font-size:.8em;">
+                        <h6>For technical assistance please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)</h6>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- START ERROR MESSAGE -->
+            <div id="bottomerror" class="row" style="display: none;">
+                <div class="span12">
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)
+                    </div>
+                </div>
+            </div>
+            <!-- END ERROR MESSAGE -->
+
+
+            <hr>
+            <footer>
+                <p>&nbsp;</p>
+            </footer>
+        </div>
+    </body>
+</html>
+ό 8.ς      [¨οι[¨π?§°      ¬    :https://gxisaccess.gxaccess.com/oam/cert/west/servlet/login.jsp?bmctx=6C50B90B5BB13FDD09D094CF04895ACA4E0764A772C60C7D6C07936EEB7528F4764E3BDFAF0A6A78459A6B0D8E4CCFD1&contextType=external&username=string&password=secure_string&challenge_url=%2Foam%2Fcert%2Fwest%2Fservlet%2Flogin.jsp&request_id=-8922086933072254112&authn_try_count=0&locale=en_US&resource_url=https%253A%252F%252Fgeoaxis.gxaccess.com%252Fms_oauth%252Foauth2%252Fendpoints%252Foauthservice%252Fauthorize%253Fclient_id%253D0c47843875934f50b933014f0be6ebe0%2526redirect_uri%253Dhttps%253A%252F%252Fbf-api.int.dev.east.paas.geointservices.io%252Foauth%252Fcallback%2526response_type%253Dcode%2526scope%253DUserProfile.me necko:classified 1 strongly-framed 1 security-info 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 request-method GET response-head HTTP/1.1 200 OK
+Date: Mon, 24 Sep 2018 14:08:40 GMT
+Server: Apache/2.2.29 (Unix) mod_ssl/2.2.29 OpenSSL/1.0.1e-fips
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization
+X-ORACLE-DMS-ECID: 0000MOBuIGsFw0xMwAEgMG1R^ROi01giYs
+Content-Type: text/html; charset=UTF-8
+ original-response-headers Date: Mon, 24 Sep 2018 14:08:40 GMT
+Server: Apache/2.2.29 (Unix) mod_ssl/2.2.29 OpenSSL/1.0.1e-fips
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization
+X-ORACLE-DMS-ECID: 0000MOBuIGsFw0xMwAEgMG1R^ROi01giYs
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+ uncompressed-len 0 net-response-time-onstart 124 net-response-time-onstop 134 predictor::resource-count 22 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/css/bootstrap.css 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/css/bootstrap-responsive.css 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/css/style.css 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/css/jNotify.jquery.css 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/css/jquery-ui-1.10.4.custom.min.css 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jquery-1.8.3.min.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jquery.blockUI.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jNotify.jquery.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/bootstrap.min.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jquery-ui.custom.min.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jquery.ui.core.min.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/jquery.ui.datepicker.min.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/cookie-utils.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/js/main.js 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/ajax-loader.gif 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/geoaxis_logo.png 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/logo_nga.png 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/consumer_portal.png 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/icon_help.png 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/background.jpg 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/glyphicons-halflings.png 1,1,1537798121,4096 predictor::https://gxisaccess.gxaccess.com/oam/cert/west/servlet/img/info.png 1,1,1537798121,4096   v3

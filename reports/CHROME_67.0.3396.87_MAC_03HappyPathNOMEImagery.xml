@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="03HappyPathNOMEImagery"
+    errors="0" failures="0" hostname="" id="" package="03HappyPathNOMEImagery" skipped="0"
+    tests="1" time="188.4" timestamp="Mon, 25 Jun 2018 20:22:13 GMT">
+  
+    <testcase name="HappyPath NOME Imagery" classname="03HappyPathNOMEImagery" time="188.4" assertions="6">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

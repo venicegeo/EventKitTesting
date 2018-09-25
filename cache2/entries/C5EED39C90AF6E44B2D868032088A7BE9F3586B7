@@ -1,0 +1,1595 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+
+
+
+
+
+
+<html lang="en">
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="utf-8" />
+        
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/jNotify.jquery.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css" media="screen">
+        
+        <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+        <script type="text/javascript" src="js/jNotify.jquery.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.core.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.datepicker.min.js"></script>
+        
+        <script type="text/javascript">
+            var mechanism = "";
+            $.ajaxSetup ({
+                cache: false
+            });
+            $.blockUI.defaults.css = {
+                padding: 0,
+                margin: 0,
+                width: '220px',
+                height: '19px',
+                top: ($(window).height() - 19) /2 + 'px',
+                left: ($(window).width() - 220) /2 + 'px',
+                textAlign: 'center',
+                cursor: 'wait'
+            };
+            $(document).ajaxStart(function() {
+                $.blockUI({
+                    message: $('#ajaxLoader')
+                });
+            });
+            $(document).ajaxStop(function() {
+                //setTimeout($.unblockUI, 3000);
+            }); 
+            
+            $(document).ready(function() {       
+                $(".helplink").click(function(event) {
+                    event.preventDefault();
+                    
+                    $("#govwarning").hide();
+                    $("#formlogin").hide();
+                    $("#formregistration").hide();
+                    $("#help").show();
+                    $(".helplink").hide();
+                    $("#formcreatedu").hide();                    
+                    $(".formlink").parent("li").siblings().removeClass("active");
+                })
+                
+                /*
+                  If fbm is set, then only show login form and government
+                  message.
+                */
+                if ($("#fbmflag").val() != 'null') {
+                
+                    // the fbm was invoked set the mechanism
+                    mechanism = $("#fbmflag").val();
+                    
+                    $("#authmechlinks").hide();
+                    $("#authmechlinks2").hide();
+                    
+                    $("#formlogin").show();
+                    // now set focus on the username textbox:
+                    $("#username").focus();
+                    
+                    $("#formmessage").hide();
+                    $(".helplink").hide();
+                    $("#formcreatedu").hide();
+                }
+                
+                $("#login").submit(function(event) {
+                    event.preventDefault();
+                   
+                    var username = $("#username").val();
+                    var password = $("#password").val();
+                    
+                    var ajaxValues = { };
+                    ajaxValues['username'] = username;
+                    ajaxValues['password'] = password;
+                    ajaxValues['mechanism'] = mechanism;
+                    ajaxValues['ajax'] = 'true';
+                    
+                    if ($("#impersonate").is(':checked')) {
+                        var impersonateIdType = $("#impersonateIdType").val();
+                        var impersonateeID = $("#impersonateeID").val();
+                        var impersonateeIdStore = $("#impersonateeIdStore").val();
+
+                        //Set values for impersonation call
+                        if (impersonateeID != null && impersonateeID.length > 0) {
+                            ajaxValues['impersonateeIdType'] = impersonateIdType;
+                            ajaxValues['impersonatee'] = impersonateeID;
+                            ajaxValues['impersonateeIdStore'] = impersonateeIdStore;
+                        }
+                    }
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: 'CredCollector',
+                        data: ajaxValues,
+                        dataType: "text",
+                        cache: false,
+                        success: function(data, status, request) {
+                            var origURL = request.getResponseHeader("REQUEST_URL");
+                            if (origURL != null) {
+                                
+                                // check if a disadvantaged user account should be created:
+                                var disUser = request.getResponseHeader("DIS_USER");
+                                if (disUser != null) {
+                                    if (disUser === "?") {
+                                        jNotify('Please complete the <b>one-time</b> registration process to create a Disadvantaged User account <br/>\n\
+                                                (DUA) via this link <a href="https://awscigxslvliten1.gxaws.dev:6443/users/disadvantaged.xhtml" target="_blank=" style="text-decoration: underline">link</a>. After registering a DUA with GEOAxIS, you will no longer see this prompt. ',
+                                        {
+                                            autoHide: true,
+                                            clickOverlay: false,
+                                            MinWidth: 250,
+                                            TimeShown: 5000,
+                                            ShowTimeEffect: 200,
+                                            HideTimeEffect: 200,
+                                            LongTrip: 20,
+                                            HorizontalPosition: 'center',
+                                            VerticalPosition: 'top',
+                                            ShowOverlay: true,
+                                            ColorOverlay: '#000',
+                                            OpacityOverlay: 0,
+                                            onClosed: function() {
+                                                $("#toperror").hide();
+                                                $("#bottomerror").hide();
+                                                window.location.replace(origURL);
+                                            },
+                                            onCompleted: function() {}
+                                        });
+                                    } 
+                                } else {
+                                    $("#toperror").hide();
+                                    $("#bottomerror").hide();
+                                    window.location.replace(origURL);
+                                }
+                            }
+                        },
+                        error: function(request, status, error) {
+                            
+                            var activeDirectory = request.getResponseHeader("ACTIVE_DIRECTORY");
+                            var passwordExpired = request.getResponseHeader("PASSWORD_EXPIRED");
+                            var gxEmailPref = request.getResponseHeader("AD_EMAIL");
+                            var isInternal = request.getResponseHeader("IS_INTERNAL");
+                            if (activeDirectory != null) {
+                                // this means authentication was successful,
+                                // but user must change password
+                                $("#toperror").hide();
+                                $("#bottomerror").hide();
+                                
+                                $("#formlogin").hide();                                
+                                $("#duemail").val(gxEmailPref);
+                                if(isInternal != null) {
+                                    $("#duemail").attr("disabled", "disabled");
+                                    $("#reDuMailLabel").hide();
+                                    $("#reduemail").hide();
+                                } else {
+                                    $("#duemail").removeAttr("disabled");
+                                    $("#reDuMailLabel").show();
+                                    $("#reduemail").show();
+                                }
+                                $("#formcreatedu").show();
+                                $.unblockUI();
+                                
+                            } else if (passwordExpired != null) {
+                                // this means authentication was successful,
+                                // but user must change password
+                                $("#toperror").hide();
+                                $("#bottomerror").hide();
+                                
+                                $("#formlogin").hide();
+                                $("#formexpiration").show();
+                                $("#passwordreset").show();
+                                
+                                $.unblockUI();
+                                
+                            } else {
+                                
+                                var allowRetry = request.getResponseHeader("R");
+                                if (allowRetry == null) {
+                                    // this means an error occurred, redirect to error page:
+                                    var message = 'You have exceeded the maximum number of login attempts. Your account has been locked.';
+                                    jError(message, {
+                                        autoHide: true,
+                                        clickOverlay: true,
+                                        MinWidth: 250,
+                                        TimeShown: 5000,
+                                        ShowTimeEffect: 200,
+                                        HideTimeEffect: 200,
+                                        LongTrip: 20,
+                                        HorizontalPosition: 'center',
+                                        VerticalPosition: 'top',
+                                        ShowOverlay: true,
+                                        ColorOverlay: '#000',
+                                        OpacityOverlay: 0.3,
+                                        onClosed: function() {
+                                            $("#toperror").hide();
+                                            $("#bottomerror").hide();
+                                            $.unblockUI();
+                                            window.location.replace("faq.jsp");
+                                        },
+                                        onCompleted: function() {}
+                                    });
+                                } else {
+                                    $("#toperror").show();
+                                    $("#bottomerror").show();
+                                }
+                                $.unblockUI();
+                            }
+                        }
+                    });
+                });
+                
+                $("#resetpassword").submit(function(event) {
+                    event.preventDefault();
+                   
+                    var newpassword = $("#newpassword").val();
+                    var renewpassword = $("#renewpassword").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'CredCollector',
+                        data: { newpassword : newpassword, renewpassword : renewpassword, mechanism : mechanism, ajax : 'true' },
+                        dataType: "text",   
+                        cache: false,
+                        success: function(data, status, request) {
+                            var origURL = request.getResponseHeader("REQUEST_URL");
+                            if (origURL != null) {
+                                //$.unblockUI();
+                                $("#toperror").hide();
+                                $("#passwordreset").hide();
+                                $("#formcreatedu").hide();                                
+                                $("#bottomerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                window.location.replace(origURL);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            var passwordFieldNull = request.getResponseHeader('PFN');
+                            var passwordMatching = request.getResponseHeader('PDM');
+                            var passwordcriteria = request.getResponseHeader('PFC');
+                            var allowRetry = request.getResponseHeader("R");
+                            
+                            if (passwordFieldNull != null) {
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                
+                                $("#passwordsnullerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PFN", "");
+                                $.unblockUI();
+                            } else if (passwordMatching != null) {
+                                $("#passwordsnullerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                
+                                $("#passwordsmatchingerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PDM", "")
+                                $.unblockUI();
+                            } else if (passwordcriteria != null) {
+                                $("#passwordsnullerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                
+                                $("#passwordscriteriaerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PFC", "")
+                                $.unblockUI();
+                            } else {
+                                if (allowRetry == null) {
+                                    // this means an error occurred, redirect to error page:
+                                    var message = 'You have exceeded the maximum number of login attempts. Your account has been locked.';
+                                    jError(message, {
+                                        autoHide: true,
+                                        clickOverlay: true,
+                                        MinWidth: 250,
+                                        TimeShown: 5000,
+                                        ShowTimeEffect: 200,
+                                        HideTimeEffect: 200,
+                                        LongTrip: 20,
+                                        HorizontalPosition: 'center',
+                                        VerticalPosition: 'top',
+                                        ShowOverlay: true,
+                                        ColorOverlay: '#000',
+                                        OpacityOverlay: 0.3,
+                                        onClosed: function() {
+                                            $("#toperror").hide();
+                                            $("#bottomerror").hide();
+                                            $.unblockUI();
+                                            window.location.replace("faq.jsp");
+                                        },
+                                        onCompleted: function() {}
+                                    });
+                                } else {
+                                    $("#toperror").show();
+                                    $("#bottomerror").show();
+                                }
+                            }
+                            $.unblockUI();
+                        }
+                    });
+                });
+                
+                $("#createdisadvuser").submit(function(event) {
+                    event.preventDefault();
+                   
+                    var duemail = $("#duemail").val();
+                    var reduemail = $("#reduemail").val();
+                    var dupassword = $("#dupassword").val();
+                    var redupassword = $("#redupassword").val();
+                    var duperiod = $("#duperiod").val();
+                    
+                    var dujustification;
+                    if ($("#dujustification").val() == "other") {
+                        dujustification = $("#dujustificationtext").val()
+                    } else if ($("#dujustification").val() != "none"){
+                        var dujustification = $("#dujustification option:selected").text();
+                    }
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: 'CredCollector',
+                        data: { duemail : duemail, reduemail : reduemail, dupassword : dupassword, redupassword : redupassword, duperiod : duperiod, dujustification : dujustification, mechanism : mechanism, ajax : 'true' },
+                        dataType: "text",   
+                        cache: false,
+                        success: function(data, status, request) {
+                            var origURL = request.getResponseHeader("REQUEST_URL");
+                            if (origURL != null) {
+                                //$.unblockUI();
+                                $("#toperror").hide();
+                                $("#passwordreset").hide();
+                                $("#formcreatedu").hide();
+                                $("#bottomerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                window.location.replace(origURL);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            var emailFieldNull = request.getResponseHeader('EFN');
+                            var emailCriteria = request.getResponseHeader('EFC');
+                            var emailMatching = request.getResponseHeader('EDM');
+                            var alreadyExistingEmail = request.getResponseHeader('AEE');
+                            var passwordFieldNull = request.getResponseHeader('PFN');
+                            var passwordMatching = request.getResponseHeader('PDM');
+                            var passwordcriteria = request.getResponseHeader('PFC');
+                            var justificationFieldNull = request.getResponseHeader('JFN');
+                            var justificationLengthExceeded = request.getResponseHeader('JLE');
+                            var dateFieldNull = request.getResponseHeader('DFN');
+                            var dateFieldInvalid = request.getResponseHeader('DFI');
+                            var allowRetry = request.getResponseHeader("R");                            
+
+                            if (justificationFieldNull != null) {
+                                $("#existingemailerror").hide();                    
+                                $("#emailsmatchingerror").hide();
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();                                
+                                $("#datefieldinvalid").hide();
+                                $("#datefieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#justificationfieldnull").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("JFN", "");
+                                $.unblockUI();
+                            } else if (justificationLengthExceeded != null) {
+                                $("#existingemailerror").hide();                    
+                                $("#emailsmatchingerror").hide();
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();                                
+                                $("#datefieldinvalid").hide();
+                                $("#datefieldnull").hide();
+                                $("#justificationfieldnull").hide();
+                                
+                                $("#justificationlengthexceeded").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("JLE", "");
+                                $.unblockUI();
+                            } else if (dateFieldNull != null) {
+                                $("#existingemailerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();                                
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+
+                                $("#datefieldnull").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("DFN", "");
+                                $.unblockUI();
+                            } else if (dateFieldInvalid != null) {
+                                $("#existingemailerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();                                
+                                $("#datefieldnull").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#datefieldinvalid").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("DFI", "");
+                                $.unblockUI();
+                            } else if (emailFieldNull != null) {
+                                $("#existingemailerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#emailsnullerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("EFN", "");
+                                $.unblockUI();
+                            } else if (emailMatching != null) {
+                                $("#existingemailerror").hide();
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#emailsmatchingerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("EDM", "")
+                                $.unblockUI();
+                            } else if (alreadyExistingEmail != null) {
+                                $("#emailsmatchingerror").hide();                    
+                                $("#emailsnullerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                                                
+                                $("#existingemailerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("AEE", "")
+                                $.unblockUI();
+                            } else if (emailCriteria != null) {
+                                $("#emailsnullerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#emailcriteriaerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("EFC", "")
+                                $.unblockUI();
+                            } else if (passwordFieldNull != null) {
+                                $("#emailsnullerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#passwordsnullerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PFN", "");
+                                $.unblockUI();
+                            } else if (passwordMatching != null) {
+                                $("#emailsnullerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#passwordscriteriaerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#passwordsmatchingerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PDM", "")
+                                $.unblockUI();
+                            } else if (passwordcriteria != null) {
+                                $("#emailsnullerror").hide();
+                                $("#emailsmatchingerror").hide();
+                                $("#emailcriteriaerror").hide();
+                                $("#passwordsnullerror").hide();
+                                $("#passwordsmatchingerror").hide();
+                                $("#datefieldnull").hide();
+                                $("#datefieldinvalid").hide();
+                                $("#justificationfieldnull").hide();
+                                $("#justificationlengthexceeded").hide();
+                                
+                                $("#passwordscriteriaerror").show();
+                                $("#bottomerror").show();
+                                
+                                // clear header after displaying error message
+                                request.setRequestHeader("PFC", "")
+                                $.unblockUI();
+                            } else {
+                                if (allowRetry == null) {
+                                    // this means an error occurred, redirect to error page:
+                                    var message = 'You have exceeded the maximum number of login attempts. Your account has been locked.';
+                                    jError(message, {
+                                        autoHide: true,
+                                        clickOverlay: true,
+                                        MinWidth: 250,
+                                        TimeShown: 5000,
+                                        ShowTimeEffect: 200,
+                                        HideTimeEffect: 200,
+                                        LongTrip: 20,
+                                        HorizontalPosition: 'center',
+                                        VerticalPosition: 'top',
+                                        ShowOverlay: true,
+                                        ColorOverlay: '#000',
+                                        OpacityOverlay: 0.3,
+                                        onClosed: function() {
+                                            $("#toperror").hide();
+                                            $("#bottomerror").hide();
+                                            $.unblockUI();
+                                            window.location.replace("faq.jsp");
+                                        },
+                                        onCompleted: function() {}
+                                    });
+                                } else {
+                                    $("#toperror").show();
+                                    $("#bottomerror").show();
+                                }
+                            }
+                            $.unblockUI();
+                        }
+                    });
+                });
+                
+                
+                
+                $(".formlink").click(function(event) {
+                    event.preventDefault();
+                    
+                    var text = $(this).text();
+                    var href = $(this).attr('href');
+
+                    var indexOf = href.lastIndexOf("?mechanism=") + 11;
+                    mechanism = href.substring(indexOf);
+                    var impIndexOf = href.lastIndexOf("&imp=true");
+                    if (impIndexOf >= 0) {
+                        $("#impersonateContainer").show();
+                        mechanism = href.substring(indexOf, impIndexOf);
+                    } else {
+                        $("#impersonateContainer").hide();
+                    }
+
+                    var forgotPasswordIndexOf = href.lastIndexOf("&forgotpassword=true");
+                    if (forgotPasswordIndexOf >= 0) {
+                        $("#forgotPasswordContainer").show();
+                        mechanism = href.substring(indexOf, forgotPasswordIndexOf);
+                    } else {
+                        $("#forgotPasswordContainer").hide();
+                    }
+
+                    $("#formtitle").text(text);
+                    $("#toperror").hide();
+                    $("#bottomerror").hide();
+
+                    $("#govwarning").hide();
+                    $("#help").hide();
+                    $("#formregistration").hide();
+                    $("#formcreatedu").hide();
+                    $(".helplink").show();
+                    $("#formlogin").show();
+                    
+					// Render the help box based on the login mechanism selected
+					if ($("#help_" + mechanism).html() === "null"){
+                        $("#helpDeskContent").html($("#help_default").html());
+                    } else {
+                        $("#helpDeskContent").html($("#help_" + mechanism).html());
+                    }
+
+					// Render the alternate help box based on the login mechanism selected
+					if ($("#altHelp_" + mechanism).html() === "null"){
+                        $("#alternateHelpDeskContent").html($("#altHelp_default").html());
+                    } else {
+                        $("#alternateHelpDeskContent").html($("#altHelp_" + mechanism).html());
+                    }
+
+                    // now set focus on the username textbox:
+                    $("#username").focus();
+
+                    // remove classes from all other LI:
+                    $(this).parent('li').siblings().removeClass('active');
+                    // can i add a class to the parent LI ?
+                    $(this).parent('li').addClass('active');
+                });
+                
+                $("#impersonate").change(function() {
+                    if ($(this).is(':checked')) {
+                        $("#impersonateIdType").removeAttr("disabled");
+                        $("#impersonateeID").removeAttr("disabled");
+                        $("#impersonateeIdStore").removeAttr("disabled");
+                    } else {
+                        $("#impersonateIdType").attr("disabled", "disabled");
+                        $("#impersonateeID").attr("disabled", "disabled");
+                        $("#impersonateeIdStore").attr("disabled", "disabled");
+                    }
+                });
+                
+                $(".basiclink").click(function(event) {
+                    var href = $(this).attr('href');
+                    // i know this always has a query string, so add ajax param:
+                    href = href + "&ajax=true";
+                    
+                    event.preventDefault();
+                    
+                    $.ajax({
+                        type: 'GET',
+                        url: href,
+                        success: function(data, status, request) {
+                            var origURL = request.getResponseHeader("REQUEST_URL");
+                            if (origURL != null) {
+                                //$.unblockUI();
+                                $("#toperror").hide();
+                                $("#bottomerror").hide();
+                                window.location.replace(origURL);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            var allowRetry = request.getResponseHeader("R");
+                            if (allowRetry == null) {
+                                // this means an error occurred, redirect to error page:
+                                var message = 'You have exceeded the maximum number of login attempts. Your account has been locked.';
+                                jError(message, {
+                                    autoHide: true,
+                                    clickOverlay: true,
+                                    MinWidth: 250,
+                                    TimeShown: 5000,
+                                    ShowTimeEffect: 200,
+                                    HideTimeEffect: 200,
+                                    LongTrip: 20,
+                                    HorizontalPosition: 'center',
+                                    VerticalPosition: 'top',
+                                    ShowOverlay: true,
+                                    ColorOverlay: '#000',
+                                    OpacityOverlay: 0.3,
+                                    onClosed: function() {
+                                        $("#toperror").hide();
+                                        $("#bottomerror").hide();
+                                        $.unblockUI();
+                                        window.location.replace("faq.jsp");
+                                    },
+                                    onCompleted: function() {}
+                                });
+                            } else {
+                                var message = 'An error occurred while processing your basic credentials.';
+                                // check if no OAM_REQ cookie was submitted:
+                                var missingCookie = request.getResponseHeader("NC");
+                                if (missingCookie != null) {
+                                    message = 'Your request cannot be completed as a necessary cookie is missing or has been removed.<BR/>Please retry your request to your original resource or restart your browser.';
+                                }
+                                jError(message, {
+                                    autoHide: false,
+                                    clickOverlay: true,
+                                    MinWidth: 250,
+                                    TimeShown: 3000,
+                                    ShowTimeEffect: 200,
+                                    HideTimeEffect: 200,
+                                    LongTrip: 20,
+                                    HorizontalPosition: 'center',
+                                    VerticalPosition: 'top',
+                                    ShowOverlay: true,
+                                    ColorOverlay: '#000',
+                                    OpacityOverlay: 0.3,
+                                    onClosed: function() {
+                                        $("#toperror").hide();
+                                        $("#bottomerror").hide();
+                                        $.unblockUI();
+                                    },
+                                    onCompleted: function() {}
+                                });
+                            }
+                        }
+                    });
+                });
+                
+                $(".x509").click(function(event) {
+                    var href = $(this).attr('href');
+                    // i know this always has a query string, so add ajax param:
+                    href = href + "&ajax=true";
+                    
+                    event.preventDefault();
+                    
+                    $.ajax({
+                        type: 'GET',
+                        url: href,
+                        success: function(data, status, request) {
+                            var origURL = request.getResponseHeader("REQUEST_URL");
+                            // check if we have a good authentication
+                            if (origURL != null) {
+                                
+                                // check if a disadvantaged user account should be created:
+                                var disUser = request.getResponseHeader("DIS_USER");
+                                var pivUser = request.getResponseHeader("PIV_USER");
+                                if (pivUser != null) {
+                                    if (pivUser === "MOD_EMAIL_EXPIRED") {
+                                        jNotify('It has been over a year since you confirmed/updated your preferred email address. <br/>\n\
+                                                 Please click this¬†<a href="https://awscigxslvliten0.gxaws.dev/users/enterprise-identity.xhtml" target="_blank=" style="text-decoration: underline">link</a>¬†to confirm/update your preferred email address.',
+                                        {
+                                            autoHide: true,
+                                            clickOverlay: false,
+                                            MinWidth: 250,
+                                            TimeShown: 5000,
+                                            ShowTimeEffect: 200,
+                                            HideTimeEffect: 200,
+                                            LongTrip: 20,
+                                            HorizontalPosition: 'center',
+                                            VerticalPosition: 'top',
+                                            ShowOverlay: true,
+                                            ColorOverlay: '#000',
+                                            OpacityOverlay: 0,
+                                            onClosed: function() {
+                                                $("#toperror").hide();
+                                                $("#bottomerror").hide();
+                                                window.location.replace(origURL);
+                                            },
+                                            onCompleted: function() {}
+                                        });
+                                    }
+                                } else if (disUser != null) {
+                                    if (disUser === "?") {
+                                        jNotify('Please complete the <b>one-time</b> registration process to create a Disadvantaged User account <br/> \n\
+                                                (DUA) via this <a href="https://awscigxslvliten1.gxaws.dev:6443/users/disadvantaged.xhtml" target="_blank=" style="text-decoration: underline">link</a>. After registering a DUA with GEOAxIS, you will no longer see this prompt.',
+                                        {
+                                            autoHide: true,
+                                            clickOverlay: false,
+                                            MinWidth: 250,
+                                            TimeShown: 5000,
+                                            ShowTimeEffect: 200,
+                                            HideTimeEffect: 200,
+                                            LongTrip: 20,
+                                            HorizontalPosition: 'center',
+                                            VerticalPosition: 'top',
+                                            ShowOverlay: true,
+                                            ColorOverlay: '#000',
+                                            OpacityOverlay: 0,
+                                            onClosed: function() {
+                                                $("#toperror").hide();
+                                                $("#bottomerror").hide();
+                                                window.location.replace(origURL);
+                                            },
+                                            onCompleted: function() {}
+                                        });
+                                    } else if (disUser === "DUA_EXP") {
+                                        jNotify('Your Disadvantaged User account (DUA) has expired. You can reactivate<br/>\n\
+                                                your DUA and update your DUA information via this <a href="https://awscigxslvliten1.gxaws.dev:6443/users/disadvantaged.xhtml" target="_blank=" style="text-decoration: underline">link</a>.',
+                                        {
+                                            autoHide: true,
+                                            clickOverlay: false,
+                                            MinWidth: 250,
+                                            TimeShown: 5000,
+                                            ShowTimeEffect: 200,
+                                            HideTimeEffect: 200,
+                                            LongTrip: 20,
+                                            HorizontalPosition: 'center',
+                                            VerticalPosition: 'top',
+                                            ShowOverlay: true,
+                                            ColorOverlay: '#000',
+                                            OpacityOverlay: 0,
+                                            onClosed: function() {
+                                                $("#toperror").hide();
+                                                $("#bottomerror").hide();
+                                                window.location.replace(origURL);
+                                            },
+                                            onCompleted: function() {}
+                                        });
+                                    }else if (disUser === "SQ") {
+                                        jNotify('You have not registered to use the Disadvantaged User account (DUA) <b>Forgot Password</b> Self-Service Password Reset capability.<br/>\n\
+                                                Registration is highly encouraged for all users with DUAs.  You can complete the registration by filling out security questions  <a href="https://awscigxslvliten1.gxaws.dev:6443/users/disadvantaged.xhtml" target="_blank=" style="text-decoration: underline">here</a>.',
+                                        {
+                                            autoHide: true,
+                                            clickOverlay: false,
+                                            MinWidth: 250,
+                                            TimeShown: 5000,
+                                            ShowTimeEffect: 200,
+                                            HideTimeEffect: 200,
+                                            LongTrip: 20,
+                                            HorizontalPosition: 'center',
+                                            VerticalPosition: 'top',
+                                            ShowOverlay: true,
+                                            ColorOverlay: '#000',
+                                            OpacityOverlay: 0,
+                                            onClosed: function() {
+                                                $("#toperror").hide();
+                                                $("#bottomerror").hide();
+                                                window.location.replace(origURL);
+                                            },
+                                            onCompleted: function() {}
+                                        });
+                                    }
+                                } else {
+                                    $("#toperror").hide();
+                                    $("#bottomerror").hide();
+                                    window.location.replace(origURL);
+                                }
+                            }
+                        },
+                        error: function(request, status, error) {
+                            var message = 'An error occurred while processing your certificate.<br/>Please make sure you have loaded your certificates into your browser and try again.';
+                            
+                            // check if no OAM_REQ cookie was submitted:
+                            var missingCookie = request.getResponseHeader("NC");
+                            if (missingCookie != null) {
+                                message = 'Your request cannot be completed as a necessary cookie is missing or has been removed.<BR/>Please retry your request to your original resource or restart your browser.';
+                            }
+                            
+                            // check if a user certificate needs to be registered:
+                            var checkUserReg = request.getResponseHeader("USR_REG");
+                            if (checkUserReg != null) {
+                                message = 'Your certificate was not recognized.  You must first register your certificate with GEOAxIS prior to use.';
+                                
+                                // show the user the user registration form:
+                                $("#help").hide();
+                                $("#govwarning").hide();
+                                $("#formlogin").hide();
+                                $("#formexpiration").hide();
+                                $("#formcreatedu").hide();
+                                $("#formregistration").show();
+                            }
+                            
+                            // display error message:
+                            jError(message, {
+                                autoHide: true,
+                                clickOverlay: true,
+                                MinWidth: 250,
+                                TimeShown: 5000,
+                                ShowTimeEffect: 200,
+                                HideTimeEffect: 200,
+                                LongTrip: 20,
+                                HorizontalPosition: 'center',
+                                VerticalPosition: 'top',
+                                ShowOverlay: true,
+                                ColorOverlay: '#000',
+                                OpacityOverlay: 0.3,
+                                onClosed: function() {
+                                    $("#toperror").hide();
+                                    $("#bottomerror").hide();
+                                    $.unblockUI();
+                                    if (checkUserReg == null) {
+                                        window.location.replace("faq.jsp");
+                                    }
+                                },
+                                onCompleted: function() {}
+                            });
+                        }
+                    });
+                });
+                
+                $("#user_registration").submit(function(event) {
+                    event.preventDefault();
+                    
+                    var firstname = $("#firstname").val();
+                    var lastname = $("#lastname").val();
+                    var organization = $("#organization").val();
+                    var emailaddress = $("#emailaddress").val();
+                    var confirmemail = $("#confirmemail").val();
+                    
+                    var sendAjaxRequest = true;
+                    var emailPattern = new RegExp("^[A-Za-z0-9._%+'-]+@[A-Za-z0-9.'-]+\\.[A-Za-z]{2,6}$");
+
+                    if (firstname == null || firstname === "") {
+                        sendAjaxRequest = false;
+                        $("#fnDiv").addClass("control-group");
+                        $("#fnDiv").addClass("error");
+                        
+                        $("#fnLabel").addClass("control-label");
+                        
+                        $("#fnInputDiv").addClass("controls");
+                        $("#fnInline").addClass("help-inline");
+                        $("#fnInline").show();
+                    } else {
+                    	 $("#fnDiv").removeClass("control-group");
+                         $("#fnDiv").removeClass("error");
+                         
+                         $("#fnLabel").removeClass("control-label");
+                         
+                         $("#fnInputDiv").removeClass("controls");
+                         $("#fnInline").removeClass("help-inline");
+                         $("#fnInline").hide();
+                    }
+                    
+                    if (lastname == null || lastname === "") {
+                    	sendAjaxRequest = false;
+                    	$("#lnDiv").addClass("control-group");
+                    	$("#lnDiv").addClass("error");
+                    	
+                    	$("#lnLabel").addClass("control-label");
+                    	
+                    	$("#lnInputDiv").addClass("controls");
+                    	$("#lnInline").addClass("help-inline");
+                    	$("#lnInline").show();
+                    } else {
+                    	$("#lnDiv").removeClass("control-group");
+                        $("#lnDiv").removeClass("error");
+                        
+                        $("#lnLabel").removeClass("control-label");
+                        
+                        $("#lnInputDiv").removeClass("controls");
+                        $("#lnInline").removeClass("help-inline");
+                        $("#lnInline").hide();
+                    }
+                    
+                    if (organization == null || organization === "") {
+                    	sendAjaxRequest = false;
+                    	$("#orgDiv").addClass("control-group");
+                        $("#orgDiv").addClass("error");
+                        
+                        $("#orgLabel").addClass("control-label");
+                        
+                        $("#orgInputDiv").addClass("controls");
+                        $("#orgInline").addClass("help-inline");
+                        $("#orgInline").show();
+                    } else {
+                    	$("#orgDiv").removeClass("control-group");
+                        $("#orgDiv").removeClass("error");
+                        
+                        $("#orgLabel").removeClass("control-label");
+                        
+                        $("#orgInputDiv").removeClass("controls");
+                        $("#orgInline").removeClass("help-inline");
+                        $("#orgInline").hide();
+                    }
+                    
+                    if (emailaddress == null || emailaddress === "") {
+                    	sendAjaxRequest = false;
+                    	$("#emailDiv").addClass("control-group");
+                        $("#emailDiv").addClass("error");
+                        
+                        $("#emailLabel").addClass("control-label");
+                        
+                        $("#emailInputDiv").addClass("controls");
+                        $("#emptyEmailInline").addClass("help-inline");
+                        $("#emptyEmailInline").show();
+                    } else if (!emailPattern.test(emailaddress)) {
+                    	sendAjaxRequest = false;
+                    	$("#emailDiv").addClass("control-group");
+                        $("#emailDiv").addClass("error");
+                        
+                        $("#emailLabel").addClass("control-label");
+                        
+                        $("#emailInputDiv").addClass("controls");
+                        $("#invalidEmailInline").addClass("help-inline");
+                        $("#emptyEmailInline").hide();
+                        $("#invalidEmailInline").show();
+                    } else {
+                    	$("#emailDiv").removeClass("control-group");
+                        $("#emailDiv").removeClass("error");
+                        
+                        $("#emailLabel").removeClass("control-label");
+                        $("#emailInputDiv").removeClass("controls");
+                        
+                        $("#emptyEmailInline").removeClass("help-inline");
+                        $("#emptyEmailInline").hide();
+                        
+                        $("#invalidEmailInline").removeClass("help-inline");
+                        $("#invalidEmailInline").hide();
+                    }
+                    
+                    if(emailaddress != null && emailPattern.test(emailaddress)) {
+	                    if (confirmemail == null || confirmemail === "") {
+	                    	sendAjaxRequest = false;
+	                    	$("#confirmEmailDiv").addClass("control-group");
+                                $("#confirmEmailDiv").addClass("error");
+
+                                $("#confirmEmailLabel").addClass("control-label");
+
+                                $("#confirmInputDiv").addClass("controls");
+                                $("#emptyConfirmEmailInline").addClass("help-inline");
+                                $("#emptyConfirmEmailInline").show();
+	                    } else {
+	                    	if (emailaddress.toUpperCase() !== confirmemail.toUpperCase()) {
+                                    sendAjaxRequest = false;
+                                    $("#confirmEmailDiv").addClass("control-group");
+                                    $("#confirmEmailDiv").addClass("error");
+                                    
+                                    $("#confirmEmailLabel").addClass("control-label");
+
+                                    $("#confirmInputDiv").addClass("controls");
+                                    $("#mismatchEmailInline").addClass("help-inline");
+                                    $("#emptyConfirmEmailInline").hide();
+                                    $("#mismatchEmailInline").show();
+                                } else {
+                                    $("#confirmEmailDiv").removeClass("control-group");
+                                    $("#confirmEmailDiv").removeClass("error");
+
+                                    $("#confirmEmailLabel").removeClass("control-label");
+
+                                    $("#confirmInputDiv").removeClass("controls");
+                                    $("#mismatchEmailInline").removeClass("help-inline");
+                                    $("#mismatchEmailInline").hide();
+                                }
+	                    }
+                    } else {
+                    	 $("#confirmEmailDiv").removeClass("control-group");
+                         $("#confirmEmailDiv").removeClass("error");
+                          
+                         $("#confirmEmailLabel").removeClass("control-label");
+                          
+                         $("#confirmInputDiv").removeClass("controls");
+                         
+                         $("#emptyConfirmEmailInline").removeClass("help-inline");
+                         $("#emptyConfirmEmailInline").hide();
+                         
+                         $("#mismatchEmailInline").removeClass("help-inline");
+                         $("#mismatchEmailInline").hide();
+                    }
+
+                    if (sendAjaxRequest) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'CredCollector/X509',
+                            data: { firstname : firstname,
+                                    lastname : lastname,
+                                    organization : organization,
+                                    emailaddress : emailaddress,
+                                    mechanism : 'GxCert',
+                                    ajax : 'true',
+                                    registered : 'true' },
+                            dataType: "text",   
+                            cache: false,
+                            success: function(data, status, request) {
+                                var origURL = request.getResponseHeader("REQUEST_URL");
+                                if (origURL != null) {
+                                    //$.unblockUI();
+                                    $("#toperror").hide();
+                                    $("#bottomerror").hide();
+                                    $("#firstnameerror").hide();
+                                    $("#lastnameerror").hide();
+                                    $("#organizationerror").hide();
+                                    $("#emptyemailerror").hide();
+                                    $("#invalidemailerror").hide();
+                                    $("#user_registrationerror").hide();
+                                    window.location.replace(origURL);
+                                }
+                            },
+                            error: function(request, status, error) {
+                                var regFail = request.getResponseHeader("RF")
+                                var userExists = request.getResponseHeader("UE")
+                                
+                                if(regFail != null) {
+                                    message = 'Your request cannot be completed at this time due to an internal error.  Pleas try again at a later time.';
+                                    
+                                    jError(message, {
+                                        autoHide: false,
+                                        clickOverlay: true,
+                                        MinWidth: 250,
+                                        TimeShown: 3000,
+                                        ShowTimeEffect: 200,
+                                        HideTimeEffect: 200,
+                                        LongTrip: 20,
+                                        HorizontalPosition: 'center',
+                                        VerticalPosition: 'top',
+                                        ShowOverlay: true,
+                                        ColorOverlay: '#000',
+                                        OpacityOverlay: 0.3,
+                                        onClosed: function() {
+                                            $("#toperror").hide();
+                                            $("#bottomerror").hide();
+                                            $.unblockUI();
+                                        },
+                                        onCompleted: function() {}
+                                    });
+                                }
+                                
+                                if(userExists != null) {
+                                    message = 'A user already exists under that account please try again under a different email address.'
+                                    
+                                    jError(message, {
+                                           autoHide: false,
+                                           clickOverlay: true,
+                                           MinWidth: 250,
+                                           TimeShown: 3000,
+                                           ShowTimeEffect: 200,
+                                           HideTimeEffect: 200,
+                                           LongTrip: 20,
+                                           HorizontalPosition: 'center',
+                                           VerticalPosition: 'top',
+                                           ShowOverlay: true,
+                                           ColorOverlay: '#000',
+                                           OpacityOverlay: 0.3,
+                                           onClosed: function() {
+                                               $("#toperror").hide();
+                                               $("#bottomerror").hide();
+                                               $.unblockUI();
+                                           },
+                                           onCompleted: function() {}
+                                     });
+                                 }
+                            }
+                        });
+                    }
+                });
+                
+                $(".faqquestion").click(function(event) {
+                    $(this).siblings().last().slideToggle("slow");
+                })
+            });
+            $(function() {
+                $( "#duperiod" ).datepicker({ minDate: 0, maxDate: "+1Y" });
+            });            
+             $(function() {
+                window.invalidate_input = function() {
+                    if ($("#dujustification").val() == "other")
+                        $("#dujustificationother").show();
+                    else
+                        $("#dujustificationother").hide();   
+                };
+                
+                $("#dujustification").change(invalidate_input);
+    
+                invalidate_input();
+            });           
+        </script>
+        <title>GEOAxIS</title>
+    </head>
+    <body>
+        <input type="hidden" id="fbmflag" value="null" />
+
+        <div id="ajaxLoader" style="display: none;"><img src="img/ajax-loader.gif" alt="Loading ..."></div>
+        
+        <div id="mynav">
+            <div class="container">
+                <div class="navbar">
+                    <div class="navbar-inner"></div>
+                </div>
+            </div>
+        </div>
+        <div id="myheader">
+            <div class="container">
+                <img class="pull-left logo" src="img/geoaxis_logo.png">
+		        <img class="pull-right logo hidden-phone" src="img/logo_nga.png">
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="container page_body">
+            <div class="row">
+                <div class="span12 title-header">
+                    <img class="pull-left" style="margin-right:1em;" src="img/consumer_portal.png"/><h1>GEOAxIS Authentication</h1>
+                </div>
+            </div>
+            <hr>
+            <!-- END COMMON HEADER -->
+
+
+            <!-- START ERROR MESSAGE -->
+            <div id="toperror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Login Failed</strong>
+            </div>
+            
+            <div id="passwordreset" class="row" style="display: none;">
+                <div class="span12">    
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                         <strong>Your password has expired. In order to continue you must reset your password</strong>
+                    </div>
+                </div>
+            </div>
+            <div id="datefieldnull" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please enter a date.</strong>
+            </div>
+           
+             <div id="datefieldinvalid" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Invalid date.</strong>
+            </div>  
+
+            <div id="justificationfieldnull" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please enter a justification.</strong>
+            </div>
+
+            <div id="justificationlengthexceeded" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please limit your justification to 1024 characters.</strong>
+            </div>
+            
+            <div id="emailsnullerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please specify e-mails to continue</strong>
+            </div>
+            <div id="existingemailerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>A DUA with this username already exists.</strong>
+            </div> 
+             <div id="emailsmatchingerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>E-mails do not match. Please re-enter e-mails</strong>
+            </div>     
+            <div id="emailcriteriaerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Invalid e-mail format</strong>
+            </div>
+            <div id="passwordsnullerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Please specify passwords to continue</strong>
+            </div>
+           
+             <div id="passwordsmatchingerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Passwords do not match. Please re-enter passwords</strong>
+            </div>
+            
+            <div id="passwordscriteriaerror" class="alert alert-error" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Disadvantaged User accounts must comply with NGA Instruction 8010.14R8 
+                    requirements for password administration, as listed below.</strong>
+                <ul>
+                    <li>Minimum 16 characters long</li>
+                    <li>Contains all of the following items:</li>
+                    <ul>
+                        <li>Uppercase letter</li>
+                        <li>Lowercase letter</li>
+                        <li>Number</li>
+                        <li>Symbol</li>
+                    </ul>
+                </ul>
+            </div>
+            <!-- END ERROR MESSAGE -->
+
+
+            <!-- START COMMON LEFT MENU -->
+            <div class="row">
+                <div id="authmechlinks" class="span4 hidden-phone">
+                    <div style="border-right:1px solid #DDD;padding-right:1em;">
+                            
+                            <h6>Please provide one of the following credentials to Authenticate</h6>
+                            <ul class="nav nav-tabs nav-stacked">
+                            <li class="nav-header">PKI Certificate</li>
+<li><a class="x509" href="CredCollector/X509?mechanism=GxCert"><i class="icon-lock icon-black"></i> DoD X509 Certificate</a></li>
+<li class="nav-header">Login/Password</li>
+<li><a class="formlink" href="?mechanism=DisUserOID&forgotpassword=true"><i class="icon-lock icon-black"></i> Disadvantaged Users</a></li>
+<li><a class="formlink" href="?mechanism=AusUserOID"><i class="icon-lock icon-black"></i> Austere Users</a></li>
+<li class="nav-header">Basic Login/Password</li>
+<li><a class="basiclink" href="CredCollector/BASIC?mechanism=GxDisAusBasic"><i class="icon-lock icon-black"></i> GEOAxIS Internal LDAP</a></li>
+
+                        </ul>
+					<div class="pull-left helplink" style="display: block;">
+						<img src="img/icon_help.png"
+							style="float: left; height: 30px; width: 30px;"> <span
+							style="display: inline-block; padding-top: 5px;"> <a
+							href="#" title="Click here for help"> <b>Which credential should I choose?</b>
+						</a>
+						</span>
+					</div>
+				</div>
+                </div>
+                <!-- END COMMON LEFT MENU -->
+
+
+                <!-- START MAIN CONTENT -->
+                <div id="formlogin" style="display: none;">
+                    <div class="span3 block_input">
+                        <h4 id="formtitle">Secure Login</h4>
+                        <hr>
+                        <form name="login" id="login" action="CredCollector" method="post" target="_parent">
+                            <label>Username: <input name="username" id="username" type="text"></label>
+                            <label>Password: <input name="password" id="password" type="password"></label>
+                            <div id="impersonateContainer" style="padding-top:20px; padding-left:20px; display: none;"><label><input type="checkbox" name="impersonate" id="impersonate" style="display: inline; margin-bottom: 5px;" /> Impersonate Entry?</label>
+                                <label style="padding-left: 10px;">Impersonatee:
+                                    <select name=impersonateIdType" id="impersonateIdType" disabled>
+                                        <option value="uid" selected>UID</option>
+                                        <option value="orclnormdn">DN</option>
+                                        <option value="gxCertificateSubjectString">Certificate Subject String</option>
+                                        <option value="gxCertificateSubjectStringReversed">Certificate Subject String Reversed</option>
+                                    </select>
+                                    <input name="impersonateeID" id="impersonateeID" type="text" disabled>
+                                </label>
+                                <label style="padding-left: 10px;">Impersonatee Identity Store: 
+                                    <select name="impersonateeIdStore" id="impersonateeIdStore" disabled>
+                                        <option value="GXIS_ADM">GXIS_ADM</option>
+<option value="GXIS_OVD">GXIS_OVD</option>
+<option value="IDSPROFILE-Gx_IDS">IDSPROFILE-Gx_IDS</option>
+<option value="IDSPROFILE-idxuserrole">IDSPROFILE-idxuserrole</option>
+<option value="IDSPROFILE-userrole">IDSPROFILE-userrole</option>
+<option value="UserIdentityStore1" selected>UserIdentityStore1</option>
+
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="forgotPasswordContainer" style="padding-top:5px; display: none; font-size:.9em;">
+								<span style="display: inline-block; padding-top: 5px;"> 
+									<a href="https://geoaxis.tl.gxaws.dev/users/forgotPassword.xhtml" title="Click here for Password Reset">Forgot your password?</a>
+								</span>
+                            </div>
+                            </br>
+                            <input class="btn" name="submit" type="submit" value="Login"/>
+                        </form>
+                    </div>
+
+                    <div id="formmessage" class="span5 hidden-phone">
+                        <div id="helpDeskContent" class="well well-small" style="font-size:.8em;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="govwarning" class="span8">
+                    <h4>You are attempting to access a resource protected by GEOAxIS.</h4>
+                    <div class="progress progress-warning progress-striped"></div>
+                    <h4>U.S. Government Warning</h4>
+                    <p>This is a United States Government Computer System.</p>
+                    <p>Use of this U.S. Government system, authorized or unauthorized, constitutes consent to monitoring of this system.</p>
+                    <p>For technical assistance, please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)</p>
+                </div>
+                        
+                <div id="help" class="span8" style="display: none;">
+                    <h4>Click the text below to find more information</h4>
+                    
+                </div>
+                
+                <div id="formexpiration" style="display: none;">
+                    <div class="span4 block_input">
+                        <h4 id="formexpirationtitle">Reset Password</h4>
+                        <hr>
+                        <form name="resetpassword" id="resetpassword" action="CredCollector" method="post" target="_parent">
+                            <label>New Password: <input name="newpassword" id="newpassword" type="password"></label>
+                            <label>Confirm Password: <input name="renewpassword" id="renewpassword" type="password"></label>
+                            <input class="btn" name="passwordreset" type="submit" value="Update Password"/>
+                        </form>
+                    </div>
+                    <div class="span4 hidden-phone">
+                        <div class="well well-small" style="font-size:.8em;">
+                            <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                            <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="formregistration" style="display: none;">
+                    <div class="span4 block_input">
+                        <h4 id="formregistrationTitle">User Certificate Registration</h4>
+                        <hr>
+                        <form name="user_registration" id="user_registration" action="CredCollector/X509" method="post" target="_parent">
+                            <p>Your certificate must be registered with GEOAxIS prior to use.
+                               Please click the 'Register Certificate' button below.</p>
+                            
+                            <div id="fnDiv">
+                                <label id="fnLabel" for="firstname">First Name:</label>
+                                <div id="fnInputDiv">
+                                    <input name="firstname" id="firstname" type="text">
+                                    <span id="fnInline" style="display: none;">Please specify your first name</span>
+                                </div>    
+                            </div>
+                            
+                            <div id="lnDiv">
+                                <label id="lnLabel" for="lastname">Last Name:</label>
+                                <div id="lnInputDiv">
+                                    <input name="lastname" id="lastname" type="text">
+                                    <span id="lnInline" style="display: none;">Please specify your last name</span>
+                                </div>
+                            </div>
+                            
+                            <div id="orgDiv">
+                                 <label id="orgLabel" for="organization">Organization:</label>
+                                 <div id="orgInputDiv">
+                                    <input name="organization" id="organization" type="text">
+                                    <span id="orgInline" style="display: none;">Please specify the organization or agency you are affiliated with</span>
+                                 </div>
+                            </div>
+                            
+                            <div id="emailDiv">
+                                 <label id="emailLabel" for="emailaddress">Email Address:</label>
+                                 <div id="emailInputDiv">
+                                    <input name="emailaddress" id="emailaddress" type="text">
+                                    <span id="emptyEmailInline" style="display: none;">Please specify your email address </span>
+                                    <span id="invalidEmailInline" style="display: none;">The email you specified is invalid.  Please re-enter your email address.</span>
+                                 </div>
+                            </div>
+                            
+                            <div id="confirmEmailDiv">
+                                 <label id="confirmEmailLabel" for="confirmemail">Confirm Email Address:</label>
+                                 <div id="confirmEmailInputDiv">
+                                    <input name="confirmemail" id="confirmemail" type="text">
+                                    <span id="emptyConfirmEmailInline" style="display: none;">Please confirm your email address</span>
+                                    <span id="mismatchEmailInline" style="display: none;">Email addresses do not match. Please re-enter your email</span>
+                                 </div>
+                            </div>
+                            
+                            <input type="hidden" name="regUsr" value="true">
+                            <input class="btn" name="registerUsr" type="submit" value="Register Certificate" />
+                        </form>
+                    </div>
+                    <div class="span4 hidden-phone">
+                        <div class="well well-small" style="font-size:.8em;">
+                            <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                            <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                        </div>
+                    </div>
+                </div>
+                
+               <div id="formcreatedu" style="display: none;">
+                    <div class="span3 block_input">
+                        <h4 id="formcreatedutitle">Disadvantaged User Registration</h4>
+                        <hr>
+                        <form name="createdisadvuser" id="createdisadvuser" action="CredCollector" method="post" target="_parent">
+                            <label>E-mail Address: <input name="duemail" id="duemail" type="email"></label>
+                            <label id="reDuMailLabel">Confirm E-mail: <input name="reduemail" id="reduemail" type="email"></label>
+                            <label>Account Expiration Date: <input name="duperiod" id="duperiod" type="text"></label>
+			                <label>Account Justification:  <select name = "dujustification" id="dujustification" style="font-size:.8em;">
+                                    <option value="none">Select one...</option>
+                                    <option value="lostToken">(U) Lost CAC/NSS Token</option>
+                                    <option value="notSupported">(U) I actively use a device that does not support hard token credentials</option>
+                                    <option value="futureUse">(U) I am registering my DUA for future use</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </label>
+                            <div id="dujustificationother" style="display: none;">
+                                <label style="font-size:.8em;">Enter your unclassified justification here.  Please limit your justification 
+                                    to 1024 characters:<textarea name="dujustificationtext" id="dujustificationtext" rows="5"></textarea></label>
+                            </div>
+                            <br/>                            
+                            <div id="pwdRequirements" style="font-size:.8em;">Disadvantaged User accounts must comply with NGA Instruction 8010.14R8 
+                                requirements for password administration, as listed below.
+                                <ul>
+                                    <li>Minimum 16 characters long</li>
+                                    <li>Contains all of the following items:
+                                        <ul>
+                                            <li>Uppercase letter</li>
+                                            <li>Lowercase letter</li>
+                                            <li>Number</li>
+                                            <li>Symbol</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>    
+                            <label>Password: <input name="dupassword" id="dupassword" type="password"></label>
+                            <label>Password Confirmation: <input name="redupassword" id="redupassword" type="password"></label>
+                            
+                            <input class="btn" name="createdisadvbutton" type="submit" value="Create Account"/>
+                        </form>
+                    </div>
+                    <div id="formmessage" class="span5 hidden-phone">
+                        <div id="alternateHelpDeskContent" class="well well-small" style="font-size:.8em;">
+                        </div>
+                    </div>
+                </div>
+                <!-- END MAIN CONTENT -->
+
+				<!-- LOGIN FORM HELP BOX -->
+				<div id="help_DisUserOID" style="display:none;">Your GEOAxIS Disadvantaged User Account (DUA) serves as a secondary Authentication method (e.g. for access on mobile devices without card readers) associated with your PKI credentials. <b>You must undergo a one-time registration process to create and activate your DUA using your Common Access Card (CAC) / National Security Systems (NSS) Token. If you have never been issued a CAC/NSS Token, you cannot register a DUA.</b> <br/> <br/>To create your DUA, ensure your CAC/NSS Token is inserted into your card reader and select the PKI Certificate option on this page.  Once you've been authenticated, you will be prompted to create your DUA.  Alternatively you can navigate to the DUA webpage (https://geoaxis.tl.gxaws.dev/users/disadvantaged.xhtml) to create your DUA.<br/><br/><b>NOTE:</b> If you have been issued a CAC/NSS Token, but currently have a <b>token hold</b> on your account, you can still register a DUA. To do this, navigate to the DUA webpage (link above) and authenticate via the Disadvantaged User option with the username/password associated with your CAC/NSS Token.<br/><br/> Following successful creation of your DUA, you can access web-based mission resources via the Disadvantaged User option using your DUA (email address and password).<br/><br/>If you need technical assistance with your DUA (e.g. you forgot your password or your account is expired), please contact the GEOAxIS Operations Support Team at 508-622-5549 (Commercial) or 576-1717 (Secure).<br/><br/><b>NOTE:</b> DUAs are NOT the same as NGA network (e.g. SECNet/SBUNet desktop login) usernames/passwords, which are managed by the ESC.</div>
+<div id="help_AusUserOID" style="display:none;">This provides an Authentication option (username and password) for <b>users who do not have and will not be issued any PKI Certificate credentials</b>, but have <b>a temporary mission impacting need to access NGA protected resources</b>.<br/><br/>If you do not have an Austere User account established, but believe you have a valid mission need, please contact the respective NGA Application you are attempting to access or the Enterprise Service Center (ESC) at 1-800-455-0899 (Commercial) or 578-5555 (Secure) for assistance contacting the NGA Application Program Office.</div>
+ 
+                <div id="help_default" style="display:none;">
+                    <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                    <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                </div>
+
+                <div id="altHelp_default" style="display:none;">
+                    <h6>For technical assistance please contact the NGA Enterprise Service Center:</h6>
+                    <p>1-800-455-0899 (Commercial)</p><p> 578-5555 (Secure)</p>
+                </div>
+
+                <!-- START COMMON FOOTER -->
+                <div id="authmechlinks2" class="span4 hidden-desktop hidden-tablet">
+                <hr class="hidden-desktop hidden-tablet">
+
+                    <h6>Please provide one of the following credentials to Authenticate</h6>
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li class="nav-header">PKI Certificate</li>
+<li><a class="x509" href="CredCollector/X509?mechanism=GxCert"><i class="icon-lock icon-black"></i> DoD X509 Certificate</a></li>
+<li class="nav-header">Login/Password</li>
+<li><a class="formlink" href="form_login.jsp?mechanism=DisUserOID" target="mainframe"><i class="icon-lock icon-black"></i> Disadvantaged Users</a></li>
+<li><a class="formlink" href="form_login.jsp?mechanism=AusUserOID" target="mainframe"><i class="icon-lock icon-black"></i> Austere Users</a></li>
+
+                    </ul>
+                </div>
+            </div>		
+            <div class="row hidden-desktop hidden-tablet">
+                <div class="span12">
+                    <div class="well well-small" style="margin-top:1em;font-size:.8em;">
+                        <h6>For technical assistance please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)</h6>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- START ERROR MESSAGE -->
+            <div id="bottomerror" class="row" style="display: none;">
+                <div class="span12">
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Please contact the NGA Enterprise Service Center: 1-800-455-0899 (Commercial), 578-5555 (Secure)
+                    </div>
+                </div>
+            </div>
+            <!-- END ERROR MESSAGE -->
+
+
+            <hr>
+            <footer>
+                <p>&nbsp;</p>
+            </footer>
+        </div>
+    </body>
+</html>
+Ãﬂöv∏      [„®[„∫?è6          :https://gxisaccess.gxaccess.com/oam/west/servlet/login.jsp?bmctx=DCFD754DD595A802518B1E4BF1DFCB85D79C94031125226B629CA2C01B6E25F1&contextType=external&username=string&password=secure_string&challenge_url=%2Foam%2Fwest%2Fservlet%2Flogin.jsp&request_id=5208328339224662484&authn_try_count=0&locale=en_US&resource_url=https%253A%252F%252Fgeoaxis.gxaccess.com%252Fms_oauth%252Foauth2%252Fendpoints%252Foauthservice%252Fauthorize%253Fclient_id%253D0c47843875934f50b933014f0be6ebe0%2526redirect_uri%253Dhttps%253A%252F%252Fbf-api.int.dev.east.paas.geointservices.io%252Foauth%252Fcallback%2526response_type%253Dcode%2526scope%253DUserProfile.me necko:classified 1 strongly-framed 1 security-info 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 request-method GET response-head HTTP/1.1 200 OK
+Date: Mon, 21 May 2018 15:20:08 GMT
+Server: Apache/2.2.29 (Unix) mod_ssl/2.2.29 OpenSSL/1.0.1e-fips
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+X-ORACLE-DMS-ECID: 0000ME3IKffFw0xMwAEgMG1Qx6j60JyodU
+Content-Type: text/html; charset=UTF-8
+ original-response-headers Date: Mon, 21 May 2018 15:20:08 GMT
+Server: Apache/2.2.29 (Unix) mod_ssl/2.2.29 OpenSSL/1.0.1e-fips
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+X-ORACLE-DMS-ECID: 0000ME3IKffFw0xMwAEgMG1Qx6j60JyodU
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+ uncompressed-len 0 predictor::resource-count 19 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/css/bootstrap.css 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/css/bootstrap-responsive.css 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/css/style.css 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/css/jNotify.jquery.css 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/css/jquery-ui-1.10.4.custom.min.css 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jquery-1.8.3.min.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jquery.blockUI.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jNotify.jquery.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/bootstrap.min.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jquery-ui.custom.min.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jquery.ui.core.min.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/js/jquery.ui.datepicker.min.js 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/background.jpg 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/ajax-loader.gif 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/geoaxis_logo.png 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/logo_nga.png 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/consumer_portal.png 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/icon_help.png 1,1,1526916008,4096 predictor::https://gxisaccess.gxaccess.com/oam/west/servlet/img/glyphicons-halflings.png 1,1,1526916008,4096 net-response-time-onstart 107 net-response-time-onstop 243  j‘

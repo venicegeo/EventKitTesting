@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="1"
+            failures="0"
+            tests="1">
+
+  <testsuite name="01GeoAxisLogin"
+    errors="1" failures="0" hostname="" id="" package="01GeoAxisLogin" skipped="0"
+    tests="1" time="3.049" timestamp="Tue, 24 Apr 2018 06:59:59 GMT">
+  
+    <testcase name="GeoAxisLogin" classname="01GeoAxisLogin" time="3.049" assertions="0">
+    </testcase>
+  
+
+  
+    <system-err>
+      Error while running windowSize command: Width and height arguments must be passed as numbers.
+    at Object.resizeWindow (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/api/client-commands.js:55:19)
+    at AsyncTree.runCommand (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:154:30)
+    at AsyncTree.runChildNode (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:114:8)
+    at AsyncTree.walkDown (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:80:10)
+    at AsyncTree.walkUp (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:97:8)
+    at AsyncTree.walkDown (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:90:12)
+    at AsyncTree.traverse (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:73:8)
+    at HttpRequest.onCommandComplete (/Users/Peizer/Documents/EventKitTest/node_modules/nightwatch/lib/core/queue.js:131:12)
+    at HttpRequest.g (events.js:291:16)
+    at emitNone (events.js:86:13)
+    </system-err>
+  
+
+  
+  </testsuite>
+</testsuites>

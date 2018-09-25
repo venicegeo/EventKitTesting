@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>button</name>
+   <tag></tag>
+   <elementGuidId>775c8510-fc5b-46b0-bb36-afb75810a856</elementGuidId>
+   <selectorMethod>BASIC</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>button</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tabindex</name>
+      <type>Main</type>
+      <value>0</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>type</name>
+      <type>Main</type>
+      <value>button</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;root&quot;)/div[1]/div[@class=&quot;qa-Application-content&quot;]/div[1]/div[1]/div[@class=&quot;qa-GroupsDrawer-Drawer&quot;]/div[1]/div[@class=&quot;qa-GroupsDrawer-CustomScrollbar&quot;]/div[1]/div[1]/div[@class=&quot;qa-GroupsDrawer-Menu&quot;]/div[1]/span[@class=&quot;qa-GroupsDrawer-groupItem&quot;]/div[1]/div[1]/div[@class=&quot;qa-GroupsDrawer-groupOptions&quot;]/button[1]</value>
+   </webElementProperties>
+</WebElementEntity>

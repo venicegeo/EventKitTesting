@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="06HappyPathStreetMapTile"
+    errors="0" failures="0" hostname="" id="" package="06HappyPathStreetMapTile" skipped="0"
+    tests="1" time="185.1" timestamp="Tue, 17 Jul 2018 14:36:33 GMT">
+  
+    <testcase name="HappyPath StreetMap Tile" classname="06HappyPathStreetMapTile" time="185.1" assertions="29">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>
